@@ -80,7 +80,7 @@ class CustomerAPI extends RESTDataSource {
 			customer: "cus_FwuENuOyLV1wqY",
 			amount: 2500,
 			currency: "usd",
-			description: "Big cock rack"
+			description: ""
 		});
 		console.log(invoice);
 	}
