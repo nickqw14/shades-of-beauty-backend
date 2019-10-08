@@ -21,14 +21,15 @@ const typeDefs = gql`
 		getAllCustomers: [Customer]
 		getCustomerByID(id: ID!): CustomerResponse!
 		getAllProducts: [Product]
-		getProductByID(id: ID!): ProductResponse
+		getProductByID(id: ID!): ProductResponse!
 	}
 	type Mutation {
 		createInvoiceItem(
-			customer: ID!
+			customerID: ID!
 			amount: Int!
 			description: String!
 		): InvoiceItem!
+		createInvoice(customerID: ID!): InvoiceResponse!
 		updateCustomerBalance(id: ID!, balance: Float!): Customer
 		createCustomer(
 			name: String!
@@ -62,6 +63,14 @@ const typeDefs = gql`
 	}
 	type InvoiceItem {
 		id: ID!
+	}
+	type Invoice {
+		id: ID!
+	}
+	type InvoiceResponse {
+		message: String!
+		success: Boolean!
+		invoice: Invoice
 	}
 `;
 

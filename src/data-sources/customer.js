@@ -51,10 +51,6 @@ class CustomerAPI extends RESTDataSource {
 
 		return customer ? this.customerReducer(customer) : false;
 	}
-	async updateCustomerBalance(id, balance) {
-		const customer = await stripe.customers.update(id, { balance });
-		return customer;
-	}
 	// This method will live on the front end
 	async createCreditCardToken(number, exp_month, exp_year, cvc) {
 		const token = await stripe.tokens.create({
@@ -74,14 +70,22 @@ class CustomerAPI extends RESTDataSource {
 		});
 		return source.last4;
 	}
-	async createInvoiceItem(customer, amount, description) {
+	// Creates a single invoice item and ques it up in pending invoices on stripe dashboard.
+	async createInvoiceItem(customerID, amount, description) {
 		const invoiceItem = await stripe.invoiceItems.create({
-			customer,
+			customer: customerID,
 			amount,
 			currency: "usd",
 			description
 		});
 		return invoiceItem;
+	}
+	// Takes all pending invoices and adds them together on one invoice which can then be paid.
+	async createInvoice(customerID) {
+		const invoice = await stripe.invoices.create({
+			customer: customerID
+		});
+		return invoice;
 	}
 }
 

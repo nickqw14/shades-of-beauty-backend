@@ -76,19 +76,29 @@ const resolvers = {
 			});
 			return customer;
 		},
-		updateCustomerBalance: async (_, { id, balance }, { dataSources }) => {
-			return await dataSources.customerAPI.updateCustomerBalance(id, balance);
-		},
 		createInvoiceItem: async (
 			_,
-			{ customer, amount, description },
+			{ customerID, amount, description },
 			{ dataSources }
 		) => {
 			return await dataSources.customerAPI.createInvoiceItem(
-				customer,
+				customerID,
 				amount,
 				description
 			);
+		},
+		createInvoice: async (_, { customerID }, { dataSources }) => {
+			const invoice = await dataSources.customerAPI.createInvoice(customerID);
+			if (!invoice)
+				return {
+					success: false,
+					message: "Invoice could not be created"
+				};
+			return {
+				success: true,
+				message: "Invoice created successfully",
+				invoice
+			};
 		}
 	}
 };
