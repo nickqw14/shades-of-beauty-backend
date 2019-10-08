@@ -74,14 +74,14 @@ class CustomerAPI extends RESTDataSource {
 		});
 		return source.last4;
 	}
-	async createInvoice(id) {
-		const invoice = await stripe.invoiceItems.create({
-			customer: "cus_FwuENuOyLV1wqY",
-			amount: 2500,
+	async createInvoiceItem(customer, amount, description) {
+		const invoiceItem = await stripe.invoiceItems.create({
+			customer,
+			amount,
 			currency: "usd",
-			description: ""
+			description
 		});
-		console.log(invoice);
+		return invoiceItem;
 	}
 }
 

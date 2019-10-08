@@ -79,8 +79,16 @@ const resolvers = {
 		updateCustomerBalance: async (_, { id, balance }, { dataSources }) => {
 			return await dataSources.customerAPI.updateCustomerBalance(id, balance);
 		},
-		createInvoice: async (_, { id }, { dataSources }) => {
-			return await dataSources.customerAPI.createInvoice(id);
+		createInvoiceItem: async (
+			_,
+			{ customer, amount, description },
+			{ dataSources }
+		) => {
+			return await dataSources.customerAPI.createInvoiceItem(
+				customer,
+				amount,
+				description
+			);
 		}
 	}
 };
