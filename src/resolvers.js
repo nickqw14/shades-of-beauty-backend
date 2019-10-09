@@ -16,6 +16,19 @@ const resolvers = {
 				customer: result
 			};
 		},
+		getCustomerByEmail: async (_, { email }, { dataSources }) => {
+			const result = await dataSources.customerAPI.getCustomerByEmail(email);
+			if (!result)
+				return {
+					success: false,
+					message: "Could not find a customer with that email"
+				};
+			return {
+				success: true,
+				message: "Customer retrieved successfully",
+				customer: result
+			};
+		},
 		getAllProducts: async (_, __, { dataSources }) => {
 			const results = await dataSources.productsAPI.getAllProducts();
 			return results.map(res => {
@@ -75,7 +88,16 @@ const resolvers = {
 				productID,
 				productDescription
 			});
-			return customer;
+			if (!customer)
+				return {
+					success: false,
+					message: "User already registered with that email"
+				};
+			return {
+				success: true,
+				message: "Customer created successfully",
+				customer: customer
+			};
 		},
 		createInvoiceItem: async (
 			_,

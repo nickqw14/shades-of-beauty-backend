@@ -17,17 +17,21 @@ class CustomerAPI extends RESTDataSource {
 		productID,
 		productDescription
 	}) {
-		const customer = await stripe.customers.create({
-			name,
-			email,
-			metadata: {
-				date,
-				time,
-				productID,
-				productDescription
-			}
-		});
-		return this.customerReducer(customer);
+		const customerCheck = await this.getCustomerByEmail(email);
+		if (!customerCheck) {
+			const customer = await stripe.customers.create({
+				name,
+				email,
+				metadata: {
+					date,
+					time,
+					productID,
+					productDescription
+				}
+			});
+			return this.customerReducer(customer);
+		}
+		return false;
 	}
 	customerReducer(customer) {
 		return {
@@ -45,6 +49,14 @@ class CustomerAPI extends RESTDataSource {
 	async getAllCustomers() {
 		const response = await this.get("customers");
 		return response.data.map(customer => this.customerReducer(customer));
+	}
+	async getCustomerByEmail(email) {
+		const response = await this.get("customers");
+		const filteredCustomer = response.data.filter(customer =>
+			customer.email === email ? true : false
+		);
+		const [customer] = filteredCustomer;
+		return customer ? this.customerReducer(customer) : false;
 	}
 	async getCustomerByID(id) {
 		const response = await this.get("customers");

@@ -17,6 +17,7 @@ const typeDefs = gql`
 		): SourceResponse!
 		getAllCustomers: [Customer]
 		getCustomerByID(id: ID!): CustomerResponse!
+		getCustomerByEmail(email: String!): CustomerResponse!
 		getAllProducts: [Product]
 		getProductByID(id: ID!): ProductResponse!
 	}
@@ -35,8 +36,9 @@ const typeDefs = gql`
 			time: String
 			productID: ID
 			productDescription: String
-		): Customer!
+		): CustomerResponse!
 	}
+	# Maybe refactor the product ID/Description to hold a product object
 	type Appointment {
 		date: String!
 		time: String!
