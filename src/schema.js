@@ -5,10 +5,7 @@ const typeDefs = gql`
 		name: String!
 		email: String!
 		id: ID!
-		appointmentDate: String
-		appointmentTime: String
-		appointmentService: String
-		balance: Int!
+		appointment: Appointment
 	}
 	type Query {
 		addCustomerCard(
@@ -34,10 +31,17 @@ const typeDefs = gql`
 		createCustomer(
 			name: String!
 			email: String!
-			appointmentDate: String
-			appointmentTime: String
-			appointmentService: String
-		): Customer
+			date: String
+			time: String
+			productID: ID
+			productDescription: String
+		): Customer!
+	}
+	type Appointment {
+		date: String!
+		time: String!
+		productID: ID!
+		productDescription: String! ## Figure this out product ID/Description need to be linked with appointment s
 	}
 	type Product {
 		id: String!

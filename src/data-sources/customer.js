@@ -12,17 +12,19 @@ class CustomerAPI extends RESTDataSource {
 	async createCustomer({
 		name,
 		email,
-		appointmentDate,
-		appointmentTime,
-		appointmentService
+		date,
+		time,
+		productID,
+		productDescription
 	}) {
 		const customer = await stripe.customers.create({
 			name,
 			email,
 			metadata: {
-				appointmentDate,
-				appointmentTime,
-				appointmentService
+				date,
+				time,
+				productID,
+				productDescription
 			}
 		});
 		return this.customerReducer(customer);
@@ -32,10 +34,12 @@ class CustomerAPI extends RESTDataSource {
 			name: customer.name,
 			email: customer.email,
 			id: customer.id,
-			appointmentDate: customer.metadata.appointmentDate,
-			appointmentTime: customer.metadata.appointmentTime,
-			appointmentService: customer.metadata.appointmentService,
-			balance: customer.balance
+			appointment: {
+				date: customer.metadata.date,
+				time: customer.metadata.time,
+				productID: customer.metadata.productID,
+				productDescription: customer.metadata.productDescription
+			}
 		};
 	}
 	async getAllCustomers() {
@@ -90,5 +94,3 @@ class CustomerAPI extends RESTDataSource {
 }
 
 module.exports = CustomerAPI;
-
-// When the order gets setup, update the balance to the service total type. Create an invoice and send same time?

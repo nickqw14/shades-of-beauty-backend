@@ -64,15 +64,16 @@ const resolvers = {
 	Mutation: {
 		createCustomer: async (
 			_,
-			{ name, email, appointmentDate, appointmentTime, appointmentService },
+			{ name, email, date, time, productID, productDescription },
 			{ dataSources }
 		) => {
 			const customer = await dataSources.customerAPI.createCustomer({
 				name,
 				email,
-				appointmentDate,
-				appointmentTime,
-				appointmentService
+				date,
+				time,
+				productID,
+				productDescription
 			});
 			return customer;
 		},
@@ -85,6 +86,7 @@ const resolvers = {
 				customerID,
 				amount,
 				description
+				// Add metadate to hold product ID /Description ?
 			);
 		},
 		createInvoice: async (_, { customerID }, { dataSources }) => {
